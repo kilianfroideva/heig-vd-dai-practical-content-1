@@ -24,9 +24,8 @@ public class BMPReader {
             fis.read(dibHeader);
 
             // Extract image dimensions
-            BMPFile bmpFile = new BMPFile();
-            bmpFile.setWidth(byteArrayToInt(dibHeader, 4));
-            bmpFile.setHeight(byteArrayToInt(dibHeader, 8));
+            BMPFile bmpFile = new BMPFile(byteArrayToInt(dibHeader, 4),byteArrayToInt(dibHeader, 8));
+
 
             // Extract bits per pixel
             int bitsPerPixel = byteArrayToShort(dibHeader, 14);
@@ -45,9 +44,6 @@ public class BMPReader {
             // Calculate padding
             int rowSize = (bmpFile.getWidth() * 3 + 3) & ~3; // Each row is padded to the nearest multiple of 4 bytes
             int padding = rowSize - (bmpFile.getWidth() * 3);
-
-            // Initialize pixel array
-            bmpFile.setPixels(new Pixel[bmpFile.getHeight()][bmpFile.getWidth()]);
 
             // Read pixel data
             byte[] row = new byte[rowSize];
