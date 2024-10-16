@@ -6,7 +6,8 @@ import picocli.CommandLine;
     description = "Apply filters to a 24-bit uncompressed bitmap file",
     version = "1.0.0",
     subcommands = {
-      GreyFilterCommands.class,
+            GreyFilterCommands.class,
+            ZoomFilterCommands.class,
     },
     scope = CommandLine.ScopeType.INHERIT,
     mixinStandardHelpOptions = true)
