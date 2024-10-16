@@ -7,6 +7,7 @@ import picocli.CommandLine;
     version = "1.0.0",
     subcommands = {
             GreyFilterCommands.class,
+            ZoomFilterCommands.class,
             BlurFilterCommands.class,
     },
     scope = CommandLine.ScopeType.INHERIT,
