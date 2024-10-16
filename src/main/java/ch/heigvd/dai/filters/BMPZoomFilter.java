@@ -20,8 +20,8 @@ public class BMPZoomFilter implements ZoomFilterInterface {
             int newWidth = bmpFile.getWidth()*ratio;
 
             Pixel[][] pixels = new Pixel[newHeight][newWidth];
-            for(int y=0;y<newHeight;y++){
-                for(int x=0;x<newWidth;x++) {
+            for(int y=0;y<newHeight;y++) {
+                for (int x = 0; x < newWidth; x++) {
                     int originalY = heightOrigin + (y / ratio) - (newHeight / (2 * ratio));
                     int originalX = widthOrigin + (x / ratio) - (newWidth / (2 * ratio));
 
@@ -35,8 +35,6 @@ public class BMPZoomFilter implements ZoomFilterInterface {
                     }
                 }
             }
-            bmpFile.setHeight(newHeight);
-            bmpFile.setWidth(newWidth);
             bmpFile.setPixels(pixels);
 
             BMPWriter writer = new BMPWriter();
