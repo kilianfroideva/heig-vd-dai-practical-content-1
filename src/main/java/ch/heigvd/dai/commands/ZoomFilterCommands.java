@@ -21,31 +21,22 @@ public class ZoomFilterCommands implements Callable<Integer> {
     protected int ratio;
 
     @CommandLine.Option(
-            names = {"-x", "--xOrigin"},
-            description = "X coordinate of the new origin (default = 0)",
-            defaultValue = "0")
-    protected int xOrigin;
+            names = {"-x", "--xRatio"},
+            description = "X ratio from the original file in percentage (default = 50)",
+            defaultValue = "50",
+            required = false)
+    protected int xOrigin = 50;
 
     @CommandLine.Option(
-            names = {"-y", "--yOrigin"},
-            description = "Y coordinate of the new origin (default = 0)",
-            defaultValue = "0")
-    protected int yOrigin;
+            names = {"-y", "--yRatio"},
+            description = "Y ratio from the original file in percentage (default = 50)",
+            defaultValue = "50",
+            required = false)
+    protected int yOrigin = 50;
 
     @Override
     public Integer call() throws IOException {
         ZoomFilterInterface zoomFilter = new BMPZoomFilter();
-
-        BMPReader reader = new BMPReader();
-        BMPFile bmpFile = reader.BMPReader(parent.getInputFilename());
-
-        // Zoom in the middle if the default value is used
-        if (yOrigin == 0) {
-            yOrigin = bmpFile.getHeight() / 2;  // Centre vertical
-        }
-        if (xOrigin == 0) {
-            xOrigin = bmpFile.getWidth() / 2;   // Centre horizontal
-        }
 
         System.out.println(
                 "Reading from " + parent.getInputFilename()

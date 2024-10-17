@@ -11,34 +11,44 @@ import java.io.IOException;
 //The zoom reset the origin (up right) of the bitmap and rescale the bitmap
 public class BMPZoomFilter implements ZoomFilterInterface {
     @Override
-    public void write(String inputFilePath, String outputFilePath, int ratio, int heightOrigin, int widthOrigin){
+    public void write(String inputFilePath, String outputFilePath, int ratio_percentage, int heightRatioPercentage, int widthRatioPercentage){
         try {
             BMPReader reader = new BMPReader();
             BMPFile bmpFile = reader.BMPReader(inputFilePath);
 
-            int newHeight = bmpFile.getHeight()*ratio;
-            int newWidth = bmpFile.getWidth()*ratio;
+            double ratio = (double)(ratio_percentage)/100.0;
+            double heightRatio = (double)(heightRatioPercentage)/100.0;
+            double widthRatio = (double)(widthRatioPercentage)/100.0;
 
-            Pixel[][] pixels = new Pixel[newHeight][newWidth];
-            for(int y=0;y<newHeight;y++) {
+            int newHeight = (int) Math.round(bmpFile.getHeight() * ratio);
+            int newWidth = (int) Math.round(bmpFile.getWidth() * ratio);
+
+            int centerY = (int) Math.round(bmpFile.getHeight() * heightRatio);
+            int centerX = (int) Math.round(bmpFile.getWidth() * widthRatio);
+
+            BMPFile zoomed_bmpFile = new BMPFile(newWidth,newHeight);
+
+            // For each pixel in the zoomed image
+            for (int y = 0; y < newHeight; y++) {
                 for (int x = 0; x < newWidth; x++) {
-                    int originalY = heightOrigin + (y / ratio) - (newHeight / (2 * ratio));
-                    int originalX = widthOrigin + (x / ratio) - (newWidth / (2 * ratio));
 
-                    // Verification if coordinate are outside the origin bitmap
-                    if (originalY >= 0 && originalY < bmpFile.getHeight() && originalX >= 0 && originalX < bmpFile.getWidth()) {
-                        // Copy the original pixel
-                        pixels[y][x] = bmpFile.getPixels()[originalY][originalX];
-                    } else {
-                        // Default color when outside the bitmap
-                        pixels[y][x] = new Pixel(255, 255, 255);
-                    }
+                    // Map the zoomed image pixel back to the original image
+                    // The shift is based on how far we are from the center
+                    int originalY = centerY + (int) Math.round((y - newHeight / 2) / ratio);
+                    int originalX = centerX + (int) Math.round((x - newWidth / 2) / ratio);
+
+                    // Ensure the coordinates are within bounds of the original image
+                    originalY = Math.max(0, Math.min(originalY, bmpFile.getHeight() - 1));
+                    originalX = Math.max(0, Math.min(originalX, bmpFile.getWidth() - 1));
+
+                    // Assign the pixel from the original image to the zoomed image
+                    zoomed_bmpFile.getPixels()[y][x] = new Pixel();
+                    zoomed_bmpFile.getPixels()[y][x].setPixel(bmpFile.getPixels()[originalY][originalX]);
                 }
             }
-            bmpFile.setPixels(pixels);
 
             BMPWriter writer = new BMPWriter();
-            writer.write(bmpFile, outputFilePath);
+            writer.write(zoomed_bmpFile, outputFilePath);
 
             System.out.println("Conversion successful!");
             System.out.println("Zoomed image saved as: " + outputFilePath);
