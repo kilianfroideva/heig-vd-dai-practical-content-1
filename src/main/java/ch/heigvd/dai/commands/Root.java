@@ -3,7 +3,7 @@ package ch.heigvd.dai.commands;
 import picocli.CommandLine;
 
 @CommandLine.Command(
-    description = "Apply filters to a 24-bit uncompressed bitmap file",
+    description = "Apply filters to a 24-bit uncompressed bitmap file.",
     version = "1.0.0",
     subcommands = {
             GreyFilterCommands.class,

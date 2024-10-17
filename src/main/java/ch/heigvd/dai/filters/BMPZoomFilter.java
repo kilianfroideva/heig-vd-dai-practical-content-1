@@ -38,7 +38,7 @@ public class BMPZoomFilter implements ZoomFilterInterface {
                     int originalX = centerX + (int) Math.round((x - newWidth / 2));
 
                     // Ensure the coordinates are within bounds of the original image
-                    if (originalY < 0 || originalX < 0) {
+                    if (originalY < 0 || originalY >= bmpFile.getHeight() || originalX < 0 || originalX >= bmpFile.getWidth()) {
                         zoomed_bmpFile.getPixels()[y][x].setPixel(new Pixel(0,0,0));
                     } else {
                         // Assign the pixel from the original image to the zoomed image
