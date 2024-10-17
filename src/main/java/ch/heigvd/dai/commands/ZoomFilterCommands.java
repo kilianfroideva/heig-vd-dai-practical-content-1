@@ -14,24 +14,31 @@ import picocli.CommandLine;
 public class ZoomFilterCommands implements Callable<Integer> {
     @CommandLine.ParentCommand protected Root parent;
 
+    // Use converter to validate ratio is between 0 and 100
     @CommandLine.Option(
             names = {"-r", "--ratio"},
-            description = "Zoom ratio (required)",
-            required = true)
+            description = "Zoom ratio (must be between 0 and 100, required)",
+            required = true,
+            converter = RatioConverter.class,
+            order = 0)
     protected int ratio;
 
     @CommandLine.Option(
             names = {"-x", "--xRatio"},
-            description = "X ratio from the original file in percentage (default = 50)",
+            description = "X ratio from the original file in percentage (default = 50, must be between 0 and 100)",
             defaultValue = "50",
-            required = false)
+            required = false,
+            converter = RatioConverter.class,
+            order = 1)
     protected int xOrigin = 50;
 
     @CommandLine.Option(
             names = {"-y", "--yRatio"},
-            description = "Y ratio from the original file in percentage (default = 50)",
+            description = "Y ratio from the original file in percentage (default = 50, must be between 0 and 100)",
             defaultValue = "50",
-            required = false)
+            required = false,
+            converter = RatioConverter.class,
+            order = 2)
     protected int yOrigin = 50;
 
     @Override
@@ -44,9 +51,21 @@ public class ZoomFilterCommands implements Callable<Integer> {
                         + " from origin (" + xOrigin + ", " + yOrigin + ")"
                         + " writing in " + parent.getOutputFilename());
 
-
         zoomFilter.write(parent.getInputFilename(), parent.getOutputFilename(), ratio, yOrigin, xOrigin);
 
         return 0;
+    }
+
+    // Custom converter to ensure integer values between 0 and 100
+    public static class RatioConverter implements CommandLine.ITypeConverter<Integer> {
+        @Override
+        public Integer convert(String value) throws Exception {
+            int parsedValue = Integer.parseInt(value);
+            if (parsedValue < 0 || parsedValue > 100) {
+                throw new CommandLine.TypeConversionException(
+                        String.format("Invalid value '%s': must be an integer between 0 and 100.", value));
+            }
+            return parsedValue;
+        }
     }
 }

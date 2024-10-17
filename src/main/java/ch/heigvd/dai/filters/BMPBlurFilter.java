@@ -92,13 +92,77 @@ public class BMPBlurFilter implements BlurFilterInterface {
             BMPWriter writer = new BMPWriter();
             writer.write(blurred_bmpFile, outputFilePath);
 
+            // Generate the filter visualization and save it as "<outputFilePath>_filter.bmp"
+            String filterOutputFilePath = outputFilePath.replace(".bmp", "_filter.bmp");
+            generateBlurFilterVisualization(filterOutputFilePath, radius, distance_metric, weight);
+
+            // Output success messages
             System.out.println("Conversion successful!");
             System.out.println("Blurred image saved as: " + outputFilePath);
+            System.out.println("Filter visualization saved as: " + filterOutputFilePath);
+
         } catch (IOException e) {
             System.err.println("An error occurred during the conversion process:");
             e.printStackTrace();
         } catch (IllegalArgumentException | UnsupportedOperationException e) {
             System.err.println("Invalid BMP file format:");
+            e.printStackTrace();
+        }
+    }
+
+    // Function to visualize the blur filter
+    void generateBlurFilterVisualization(String outputFilePath,double radius, double distance_metric, double weight) {
+        int resolution = (int)Math.round(1.25*2*radius)+1;
+        BMPFile visual_bmpFile = new BMPFile(resolution, resolution);
+
+        Position center = new Position();
+        center.x = resolution / 2;
+        center.y = resolution / 2;
+
+        Position next_to = new Position();
+        next_to.x = center.x + 1;
+        next_to.y = center.y + 1;
+
+        double max_inv_dist = 1.0 / distance(center,next_to,weight);
+        // Iterate over the bitmap and calculate pixel color based on distance and weight
+        for (int y = 0; y < resolution; y++) {
+            for (int x = 0; x < resolution; x++) {
+                Position current = new Position();
+                current.x = x;
+                current.y = y;
+
+                double dist = distance(center, current, distance_metric);
+
+                Pixel pixel = new Pixel();
+                if (dist == 0) {
+                    // Center pixel is red
+                    pixel.setRed(255);
+                    pixel.setGreen(0);
+                    pixel.setBlue(0);
+                } else if (dist > radius) {
+                    // Pixels outside the radius are white
+                    pixel.setRed(0);
+                    pixel.setGreen(0);
+                    pixel.setBlue(0);
+                } else {
+                    // Pixels inside the radius are gray scaled based on weight
+                    double inv_dist = 1.0 / distance(center,current,weight); // Inverse distance as weight
+                    int gray_value = (int) Math.min(255, 255 * inv_dist/max_inv_dist); // Gray value based on weight
+                    pixel.setRed(gray_value);
+                    pixel.setGreen(gray_value);
+                    pixel.setBlue(gray_value);
+                }
+
+                visual_bmpFile.getPixels()[y][x].setPixel(pixel);
+            }
+        }
+
+        // Write the visual representation to a BMP file
+        try {
+            BMPWriter writer = new BMPWriter();
+            writer.write(visual_bmpFile, outputFilePath);
+            System.out.println("Visualization saved as: " + outputFilePath);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

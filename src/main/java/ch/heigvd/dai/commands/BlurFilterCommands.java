@@ -2,8 +2,9 @@ package ch.heigvd.dai.commands;
 
 import ch.heigvd.dai.filters.BMPBlurFilter;
 import ch.heigvd.dai.ios.BlurFilterInterface;
-import java.util.concurrent.Callable;
 import picocli.CommandLine;
+
+import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "blurFilter", description = "Apply a blur filter.")
 public class BlurFilterCommands implements Callable<Integer> {
@@ -11,8 +12,9 @@ public class BlurFilterCommands implements Callable<Integer> {
 
     @CommandLine.Option(
             names = {"-r", "--radius"},
-            description = "Set the radius",
+            description = "Set the radius (must be positive)",
             required = true,
+            converter = PositiveDoubleConverter.class, // Use custom converter for validation
             order = 0)
     protected double radius;
 
@@ -32,14 +34,8 @@ public class BlurFilterCommands implements Callable<Integer> {
             order = 2)
     protected double weight = 0;
 
-
     @Override
     public Integer call() {
-        if(radius <= 0){
-            System.out.println("Radius must be positive.");
-            return 1;
-        }
-
         BlurFilterInterface blurFilter = new BMPBlurFilter();
 
         System.out.println(
@@ -48,7 +44,19 @@ public class BlurFilterCommands implements Callable<Integer> {
                         + " writing in "
                         + parent.getOutputFilename());
 
-        blurFilter.write(parent.getInputFilename(),parent.getOutputFilename(), distance_metric,  weight, radius);
+        blurFilter.write(parent.getInputFilename(), parent.getOutputFilename(), distance_metric, weight, radius);
         return 0;
+    }
+
+    // Custom converter to ensure positive double values
+    public static class PositiveDoubleConverter implements CommandLine.ITypeConverter<Double> {
+        @Override
+        public Double convert(String value) throws Exception {
+            double parsedValue = Double.parseDouble(value);
+            if (parsedValue <= 0) {
+                throw new CommandLine.TypeConversionException("Radius must be a positive number.");
+            }
+            return parsedValue;
+        }
     }
 }
