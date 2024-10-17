@@ -6,7 +6,7 @@ import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(name = "blurFilter", description = "Apply a blur filter.")
+@CommandLine.Command(name = "blur", description = "Apply a blur filter.", sortOptions = false)
 public class BlurFilterCommands implements Callable<Integer> {
     @CommandLine.ParentCommand protected Root parent;
 

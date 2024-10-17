@@ -112,7 +112,7 @@ public class BMPBlurFilter implements BlurFilterInterface {
 
     // Function to visualize the blur filter
     void generateBlurFilterVisualization(String outputFilePath,double radius, double distance_metric, double weight) {
-        int resolution = (int)Math.round(1.25*2*radius)+1;
+        int resolution = 2*((int)Math.round(1.25*radius))+1;
         BMPFile visual_bmpFile = new BMPFile(resolution, resolution);
 
         Position center = new Position();
