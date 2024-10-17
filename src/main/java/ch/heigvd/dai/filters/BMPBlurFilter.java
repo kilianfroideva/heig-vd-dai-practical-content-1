@@ -8,18 +8,18 @@ import ch.heigvd.dai.ios.BlurFilterInterface;
 import java.io.IOException;
 
 public class BMPBlurFilter implements BlurFilterInterface {
-    class Position {
+    public static class Position {
         int x;
         int y;
     }
 
-    class PixelDouble {
+    public static class PixelDouble {
         double red;
         double green;
         double blue;
     }
 
-    double distance(Position p1, Position p2, double distance_metric) {
+    public static double distance(Position p1, Position p2, double distance_metric) {
         if(distance_metric < 0){
             // Square
             return Math.max(Math.abs(p1.x - p2.x), Math.abs(p1.y - p2.y));
@@ -37,7 +37,7 @@ public class BMPBlurFilter implements BlurFilterInterface {
     }
 
 
-    Pixel applyPixelBlurFilter(Position position, BMPFile original_bmp_file, double distance_metric, double weight, double radius){
+    public static Pixel applyPixelBlurFilter(Position position, BMPFile original_bmp_file, double distance_metric, double weight, double radius){
         Pixel pixel_blur_filter = new Pixel();
         double weight_sum = 0.0;
         PixelDouble pixel_sum = new PixelDouble();

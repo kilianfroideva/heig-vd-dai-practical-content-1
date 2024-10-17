@@ -9,6 +9,7 @@ import picocli.CommandLine;
             GreyFilterCommands.class,
             ZoomFilterCommands.class,
             BlurFilterCommands.class,
+            ResolutionFilterCommands.class,
     },
     scope = CommandLine.ScopeType.INHERIT,
     mixinStandardHelpOptions = true)
