@@ -34,8 +34,8 @@ public class BMPZoomFilter implements ZoomFilterInterface {
 
                     // Map the zoomed image pixel back to the original image
                     // The shift is based on how far we are from the center
-                    int originalY = centerY + (int) Math.round((y - newHeight / 2) / ratio);
-                    int originalX = centerX + (int) Math.round((x - newWidth / 2) / ratio);
+                    int originalY = centerY + (int) Math.round((y - newHeight / 2));
+                    int originalX = centerX + (int) Math.round((x - newWidth / 2));
 
                     // Ensure the coordinates are within bounds of the original image
                     originalY = Math.max(0, Math.min(originalY, bmpFile.getHeight() - 1));
