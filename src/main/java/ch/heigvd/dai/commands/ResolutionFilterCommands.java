@@ -7,13 +7,13 @@ import picocli.CommandLine;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(name = "resolution", description = "Apply a smaller resolution filter.")
+@CommandLine.Command(name = "resolution", description = "Output a smaller resolution file given a ratio.", sortOptions = false)
 public class ResolutionFilterCommands implements Callable<Integer> {
     @CommandLine.ParentCommand protected Root parent;
 
     @CommandLine.Option(
             names = {"-r", "--ratio"},
-            description = "Resolution ratio (must be between 0 and 100, required)",
+            description = "Resolution ratio in percentage (must be between 0 and 100)",
             required = true,
             converter = RatioConverter.class,
             order = 0)

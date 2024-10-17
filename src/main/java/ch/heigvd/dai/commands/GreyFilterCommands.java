@@ -5,14 +5,15 @@ import ch.heigvd.dai.ios.GreyFilterInterface;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
-@CommandLine.Command(name = "greyFilter", description = "Apply a grey filter.")
+@CommandLine.Command(name = "grey", description = "Apply a grey-scaling filter.", sortOptions = false)
 public class GreyFilterCommands implements Callable<Integer> {
     @CommandLine.ParentCommand protected Root parent;
 
     @CommandLine.Option(
             names = {"-i", "--inverted"},
             description = "Invert black and white",
-            required = false)
+            required = false,
+            defaultValue = "false")
     protected boolean inverted = false;
 
     @Override

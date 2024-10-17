@@ -1,23 +1,21 @@
 package ch.heigvd.dai.commands;
 
-import ch.heigvd.dai.BMPClass.BMPFile;
 import ch.heigvd.dai.filters.BMPZoomFilter;
 import ch.heigvd.dai.ios.ZoomFilterInterface;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-import ch.heigvd.dai.ios.bmp.BMPReader;
 import picocli.CommandLine;
 
-@CommandLine.Command(name = "zoom", description = "Apply a zoom filter with an adjustable origin and ratio.")
+@CommandLine.Command(name = "zoom", description = "Output a zoomed file with an adjustable origin and ratio.", sortOptions = false)
 public class ZoomFilterCommands implements Callable<Integer> {
     @CommandLine.ParentCommand protected Root parent;
 
     // Use converter to validate ratio is between 0 and 100
     @CommandLine.Option(
             names = {"-r", "--ratio"},
-            description = "Zoom ratio (must be between 0 and 100, required)",
+            description = "Zoom ratio in percentage (must be between 0 and 100)",
             required = true,
             converter = RatioConverter.class,
             order = 0)
