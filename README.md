@@ -55,7 +55,7 @@ The application allows you to apply different filters by running specific comman
 To apply a Black & White (grayscale) filter to a BMP image, use the following command. You can also invert the colors by adding the `--inverted` option.
 
 ```bash
-java -jar target/java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> [-hV] grey -i
+java -jar target/practical-work-1-demo-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> [-hV] grey -i
 ```
 #### Option
 -i or --inverted : Inverts the black and white colors. This option is optional. If omitted, the standard grayscale filter is applied.
@@ -73,7 +73,7 @@ grey            |  grey --inverted
 To apply a blur filter to a BMP image, use the following command. You can specify the radius, distance metric, and weight for the blur effect.
 
 ```bash
-java -jar target/java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> blur [-hV] -r=<radius> [-d=<distance_metric>]
+java -jar target/practical-work-1-demo-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> blur [-hV] -r=<radius> [-d=<distance_metric>]
 [-w=<weight>]
 ```
 #### Options
@@ -92,7 +92,7 @@ blur -r=5            |  blur -r=5 -d=-1 -w=2
 The Zoom Filter allows you to apply a zoom effect to your bitmap, adjusting the image resolution while focusing on a specific point defined by X and Y percentages of the original image size from the top left corner. Out-ranged pixels are black.
 
 ```bash
-java -jar java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> zoom [-hV] -r=<ratio> [-x=<xRatio>] [-y=<yRatio>]
+java -jar target/practical-work-1-demo-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> zoom [-hV] -r=<ratio> [-x=<xRatio>] [-y=<yRatio>]
 ```
 #### Options
 -r, --ratio: The zoom ratio (required, must be between 0 and 100). A value greater than 1 will zoom in, while a value less than 1 will zoom out.
@@ -111,7 +111,7 @@ zoom -r=50            |  zoom -r=50 -x=10 -y=0
 The Resolution Change Filter allows you to reduce the resolution of a bitmap image by specifying a ratio in percentage (100 = origin bitmap).
 
 ```bash
-java -jar java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> resolution [-hV] -r=<ratio>
+java -jar target/practical-work-1-demo-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> resolution [-hV] -r=<ratio>
 ```
 #### Options
 -r or --ratio : Define the ratio of the decrease in resolution.
