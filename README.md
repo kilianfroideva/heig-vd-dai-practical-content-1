@@ -2,7 +2,11 @@
 
 ## Overview
 
-This project is a Java-based application that allows users to apply various filters to BMP bitmap images, such as Black & White, Blurring, Zoom, and Resolution Change. The application uses basic Java libraries to implement BMP image manipulation. The bitmap data is managed via a custom `BMPFile` class, which uses height, width and a vector of pixels. Every pixels are defined by his color(RGB). Additionally, the application provides classes `BMPReader` and `BMPWriter` to read and write BMP files.
+This project is a Java-based application that allows users to apply various filters to BMP bitmap images,
+such as Black & White, Blurring, Zoom, and Resolution Change. The application uses basic Java libraries to implement
+BMP image manipulation. The bitmap data is managed via a custom `BMPFile` class, which uses height, width and a vector
+of pixels. Every pixels are defined by his color(RGB). Additionally, the application provides classes `BMPReader` and
+`BMPWriter` to read and write BMP files.
 
 ### Features
 
@@ -51,44 +55,75 @@ The application allows you to apply different filters by running specific comman
 To apply a Black & White (grayscale) filter to a BMP image, use the following command. You can also invert the colors by adding the `--inverted` option.
 
 ```bash
-java -jar target/heig-vd-dai-practical-content-1.jar greyFilter -i <inputFilePath> <outputFilePath>
+java -jar target/java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> [-hV] grey -i
 ```
 #### Option
 -i or --inverted : Inverts the black and white colors. This option is optional. If omitted, the standard grayscale filter is applied.
+
+
+#### Examples
+
+grey            |  grey --inverted
+:-------------------------:|:-------------------------:
+![](BMP_examples/grey/grey.bmp)  |  ![](BMP_examples/grey/grey_inverted.bmp) | 
+
 
 ### Blur Filter
 
 To apply a blur filter to a BMP image, use the following command. You can specify the radius, distance metric, and weight for the blur effect.
 
 ```bash
-java -jar target/bmp-image-filter.jar blurFilter -r <radius> [options] <inputFilePath> <outputFilePath>
+java -jar target/java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> blur [-hV] -r=<radius> [-d=<distance_metric>]
+[-w=<weight>]
 ```
 #### Options
 -r or --radius (required): Specifies the radius of the blur. The value must be positive.
 -d or --distanceMetric: Specifies the distance metric (default is 2).
 -w or --weight: Specifies the weight of the blur (default is 0).
 
+#### Examples
+
+blur -r=5            |  blur -r=5 -d=-1 -w=2
+:-------------------------:|:-------------------------:
+![](BMP_examples/blur/blur_r5_d2_w0.bmp)  |  ![](BMP_examples/blur/blur_r5_d-1_w2.bmp) 
+
 ### Zoom filter
 
-The Zoom Filter allows you to apply a zoom effect to your bitmap, adjusting the image resolution while focusing on a specific point defined by X and Y percentages of the original image size.
+The Zoom Filter allows you to apply a zoom effect to your bitmap, adjusting the image resolution while focusing on a specific point defined by X and Y percentages of the original image size from the top left corner. Out-ranged pixels are black.
 
 ```bash
-java -jar bmp-filters.jar zoomFilter -i input.bmp -o output.bmp -r 2 -x 60 -y 40
+java -jar java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> zoom [-hV] -r=<ratio> [-x=<xRatio>] [-y=<yRatio>]
 ```
 #### Options
 -r, --ratio: The zoom ratio (required, must be between 0 and 100). A value greater than 1 will zoom in, while a value less than 1 will zoom out.
 -x, --xRatio: The X ratio from the original file in percentage (default = 50). Must be between 0 and 100. Defines the horizontal origin for the zoom.
 -y, --yRatio: The Y ratio from the original file in percentage (default = 50). Must be between 0 and 100. Defines the vertical origin for the zoom.
 
+#### Examples
+
+zoom -r=50            |  zoom -r=50 -x=10 -y=0
+:-------------------------:|:-------------------------:
+![](BMP_examples/zoom/zoom_r50.bmp)  |  ![](BMP_examples/zoom/zoom_r25_x10_y0.bmp) | 
+
+
 ### Resolution change
 
-The Resolution Change Filter allows you to reduce the resolution of a bitmap image by specifying a ratio (100 = origin bitmap).
+The Resolution Change Filter allows you to reduce the resolution of a bitmap image by specifying a ratio in percentage (100 = origin bitmap).
 
 ```bash
-java -jar bmp-filters.jar resolutionFilter -i input.bmp -o output.bmp -r 50
+java -jar java-ios-1.0-SNAPSHOT.jar <inputFilePath> <outputFilePath> resolution [-hV] -r=<ratio>
 ```
-### Options
--r or --ratio : Define the ratio of the decrease of the resolution
+#### Options
+-r or --ratio : Define the ratio of the decrease in resolution.
+
+#### Examples
+
+resolution -r=50            |  resolution -r=1
+:-------------------------:|:-------------------------:
+![](BMP_examples/resolution/resolution_r50.bmp) |  ![](BMP_examples/resolution/resolution_r1.bmp)
+
+
+
 ## Authors
 
 Kilian Froidevaux & Nicolas Bovard
