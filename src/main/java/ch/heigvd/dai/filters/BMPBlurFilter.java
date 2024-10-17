@@ -92,8 +92,15 @@ public class BMPBlurFilter implements BlurFilterInterface {
             BMPWriter writer = new BMPWriter();
             writer.write(blurred_bmpFile, outputFilePath);
 
+            // Generate the filter visualization and save it as "<outputFilePath>_filter.bmp"
+            String filterOutputFilePath = outputFilePath.replace(".bmp", "_filter.bmp");
+            generateBlurFilterVisualization(filterOutputFilePath, radius, distance_metric, weight);
+
+            // Output success messages
             System.out.println("Conversion successful!");
             System.out.println("Blurred image saved as: " + outputFilePath);
+            System.out.println("Filter visualization saved as: " + filterOutputFilePath);
+
         } catch (IOException e) {
             System.err.println("An error occurred during the conversion process:");
             e.printStackTrace();
@@ -104,7 +111,8 @@ public class BMPBlurFilter implements BlurFilterInterface {
     }
 
     // Function to visualize the blur filter
-    void generateBlurFilterVisualization(String outputFilePath, int resolution, double radius, double distance_metric, double weight) {
+    void generateBlurFilterVisualization(String outputFilePath,double radius, double distance_metric, double weight) {
+        int resolution = (int)Math.round(1.25*2*radius)+1;
         BMPFile visual_bmpFile = new BMPFile(resolution, resolution);
 
         Position center = new Position();
@@ -157,14 +165,5 @@ public class BMPBlurFilter implements BlurFilterInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        BMPBlurFilter visualizer = new BMPBlurFilter();
-        double radius = 10; // Blur radius
-        int resolution = (int)Math.round(1.25*2*radius)+1;
-        double distance_metric = 2.0; // Circular blur (Minkowski distance)
-        double weight = 0;
-        visualizer.generateBlurFilterVisualization("blur_visualization.bmp", resolution, radius, distance_metric, weight);
     }
 }
