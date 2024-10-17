@@ -82,15 +82,13 @@ java -jar bmp-filters.jar zoomFilter -i input.bmp -o output.bmp -r 2 -x 60 -y 40
 
 ### Resolution change
 
-The Resolution Change Filter allows you to resize a bitmap image by specifying new dimensions, effectively changing the resolution of the image.
+The Resolution Change Filter allows you to reduce the resolution of a bitmap image by specifying a ratio (100 = origin bitmap).
 
-**Command Syntax:**
 ```bash
-java -jar bmp-filters.jar resolutionFilter -i input.bmp -o output.bmp -w 1920 -h 1080
+java -jar bmp-filters.jar resolutionFilter -i input.bmp -o output.bmp -r 50
 ```
 ### Options
--w or --width : Defines the width of the bitmap.
--h or --height : Defines the height of the bitmap.
+-r or --ratio : Define the ratio of the decrease of the resolution
 ## Authors
 
 Kilian Froidevaux & Nicolas Bovard
